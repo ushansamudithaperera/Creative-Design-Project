@@ -1,11 +1,11 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # ⚡ Voltiva 2.0 — IoT Smart Energy Meter
 
 ### Real-time energy monitoring with smart notifications
 
 [![ESP32](https://img.shields.io/badge/Platform-ESP32-blue?style=for-the-badge&logo=espressif&logoColor=white)](https://www.espressif.com/)
-[![Blynk](https://img.shields.io/badge/Dashboard-Blynk-00C853?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJ3aGl0ZSIgZD0iTTEyIDJMMiAyMmgyMEwxMiAyeiIvPjwvc3ZnPg==)](https://blynk.io/)
+[![Blynk](https://img.shields.io/badge/Dashboard-Blynk-00C853?style=for-the-badge)](https://blynk.io/)
 [![Telegram](https://img.shields.io/badge/Alerts-Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://telegram.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
@@ -28,7 +28,7 @@
 - [Circuit Diagram](#-circuit-diagram)
 - [Pin Configuration](#-pin-configuration)
 - [Software Dependencies](#-software-dependencies)
-- [Installation & Setup](#-installation--setup)
+- [Installation and Setup](#-installation-and-setup)
 - [Configuration](#-configuration)
 - [Usage](#-usage)
 - [CEB Tariff Calculation](#-ceb-tariff-calculation)
@@ -46,7 +46,7 @@
 
 - 📊 **Live dashboard** via Blynk IoT platform
 - 📱 **Periodic usage reports** via Telegram bot
-- 🖥️ **On-device display** via 16×2 I2C LCD
+- 🖥️ **On-device display** via 16x2 I2C LCD
 - 💾 **Persistent storage** via EEPROM (survives power outages)
 - 🔌 **Plug-out detection** with session-level billing summaries
 
@@ -55,11 +55,11 @@
 ## ✨ Features
 
 | Feature | Description |
-|---|---|
+|---------|-------------|
 | **Real-Time Monitoring** | Measures voltage (Vrms), current (Irms), and apparent power every second |
 | **Energy Accumulation** | Tracks cumulative kWh with EEPROM persistence |
 | **CEB Tariff Engine** | Calculates cost using Sri Lanka's tiered electricity pricing (6 slabs) |
-| **Session Tracking** | Detects plug-in / plug-out events and reports per-session energy & cost |
+| **Session Tracking** | Detects plug-in / plug-out events and reports per-session energy and cost |
 | **Blynk Dashboard** | Cloud-based real-time visualization of all parameters |
 | **Telegram Alerts** | Sends periodic usage updates and plug-out summaries via Telegram bot |
 | **LCD Display** | Alternating 2-page display showing V/I/P and Energy/Cost |
@@ -71,24 +71,24 @@
 ## 🏗 System Architecture
 
 ```
-┌──────────────┐      ┌─────────────┐      ┌──────────────────┐
-│  230V AC     │─────▶│  ZMPT101B   │─────▶│                  │
-│  Mains       │      │  (Voltage)  │      │                  │
-└──────────────┘      └─────────────┘      │                  │
-                                           │    ESP32         │──── WiFi ────▶ Blynk Cloud
-┌──────────────┐      ┌─────────────┐      │    DevKit        │──── WiFi ────▶ Telegram API
-│  Appliance   │─────▶│  ACS712     │─────▶│                  │
-│  Load        │      │  (Current)  │      │                  │
-└──────────────┘      └─────────────┘      │                  │
-                                           │                  │───▶ 16x2 I2C LCD
-                                           │                  │
-                      ┌─────────────┐      │                  │
-                      │ Reset Button│─────▶│                  │
-                      └─────────────┘      └──────────────────┘
-                                                    │
-                                           ┌────────┴────────┐
-                                           │  5V AC-DC PSU   │
-                                           └─────────────────┘
++----------------+      +-------------+      +--------------------+
+|  230V AC       |----->|  ZMPT101B   |----->|                    |
+|  Mains         |      |  (Voltage)  |      |                    |
++----------------+      +-------------+      |                    |
+                                              |    ESP32           |---- WiFi ----> Blynk Cloud
++----------------+      +-------------+      |    DevKit          |---- WiFi ----> Telegram API
+|  Appliance     |----->|  ACS712     |----->|                    |
+|  Load          |      |  (Current)  |      |                    |
++----------------+      +-------------+      |                    |
+                                              |                    |----> 16x2 I2C LCD
+                                              |                    |
+                         +-------------+      |                    |
+                         | Reset Button|----->|                    |
+                         +-------------+      +--------------------+
+                                                       |
+                                              +--------+--------+
+                                              |  5V AC-DC PSU   |
+                                              +-----------------+
 ```
 
 ---
@@ -96,14 +96,14 @@
 ## 🔧 Hardware Components
 
 | Component | Specification | Purpose |
-|---|---|---|
+|-----------|---------------|---------|
 | ESP32-DevKit V1 | Dual-core, WiFi + BLE | Main controller |
 | ZMPT101B | AC Voltage Sensor Module | Voltage measurement (230V AC) |
 | ACS712 | 5A/20A/30A Current Sensor | Current measurement |
-| 16×2 I2C LCD | HD44780 with PCF8574 backpack (0x27) | Local display |
+| 16x2 I2C LCD | HD44780 with PCF8574 backpack (0x27) | Local display |
 | 5V AC-DC Converter | HLK-PM01 or equivalent | Board power supply |
 | Push Button | Momentary, normally open | EEPROM data reset |
-| Resistors & Wires | Assorted | Circuit connections |
+| Resistors and Wires | Assorted | Circuit connections |
 
 ---
 
@@ -115,10 +115,12 @@
 
 </div>
 
-### Pin Configuration
+---
+
+## 📌 Pin Configuration
 
 | ESP32 Pin | Connected To | Function |
-|---|---|---|
+|-----------|-------------|----------|
 | GPIO 35 | ZMPT101B OUT | Voltage analog input |
 | GPIO 34 | ACS712 OUT | Current analog input |
 | GPIO 21 (SDA) | LCD SDA | I2C data |
@@ -132,11 +134,11 @@
 Install the following libraries via the **Arduino Library Manager** or **PlatformIO**:
 
 | Library | Version | Purpose |
-|---|---|---|
+|---------|---------|---------|
 | [EmonLib](https://github.com/openenergymonitor/EmonLib) | Latest | Energy monitoring calculations |
-| [Blynk](https://github.com/blynkkk/blynk-library) | ≥ 1.3.0 | IoT cloud dashboard |
+| [Blynk](https://github.com/blynkkk/blynk-library) | 1.3.0+ | IoT cloud dashboard |
 | [LiquidCrystal_I2C](https://github.com/johnrickman/LiquidCrystal_I2C) | Latest | I2C LCD driver |
-| [ArduinoJson](https://github.com/bblanchon/ArduinoJson) | ≥ 6.x | JSON serialization for Telegram API |
+| [ArduinoJson](https://github.com/bblanchon/ArduinoJson) | 6.x+ | JSON serialization for Telegram API |
 | WiFi (built-in) | — | ESP32 WiFi connectivity |
 | EEPROM (built-in) | — | Persistent data storage |
 | Wire (built-in) | — | I2C communication |
@@ -144,11 +146,11 @@ Install the following libraries via the **Arduino Library Manager** or **Platfor
 
 ---
 
-## 🚀 Installation & Setup
+## 🚀 Installation and Setup
 
 ### Prerequisites
 
-- [Arduino IDE](https://www.arduino.cc/en/software) (≥ 2.0) or [PlatformIO](https://platformio.org/)
+- [Arduino IDE](https://www.arduino.cc/en/software) (2.0 or newer) or [PlatformIO](https://platformio.org/)
 - ESP32 board package installed ([guide](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html))
 - A [Blynk IoT](https://blynk.io/) account (free tier works)
 - A [Telegram Bot](https://core.telegram.org/bots#how-do-i-create-a-bot) with token and chat ID
@@ -156,31 +158,34 @@ Install the following libraries via the **Arduino Library Manager** or **Platfor
 ### Steps
 
 1. **Clone the repository**
-   ```bash
-   git clone https://github.com/<your-username>/voltiva-2.0.git
-   cd voltiva-2.0
-   ```
+
+```bash
+git clone https://github.com/ushansamudithaperera/Creative-Design-Project.git
+cd Creative-Design-Project
+```
 
 2. **Install libraries** — Use the Arduino Library Manager or add them to `platformio.ini`.
 
-3. **Configure credentials** — Open `Code.txt` (or rename to `voltiva.ino`) and update:
-   ```cpp
-   #define BLYNK_TEMPLATE_ID   "YOUR_TEMPLATE_ID"
-   #define BLYNK_TEMPLATE_NAME "YOUR_TEMPLATE_NAME"
-   #define BLYNK_AUTH_TOKEN    "YOUR_AUTH_TOKEN"
+3. **Configure credentials** — Open the `.ino` file and update:
 
-   const char* telegramBotToken = "YOUR_BOT_TOKEN";
-   const char* telegramChatID   = "YOUR_CHAT_ID";
+```cpp
+#define BLYNK_TEMPLATE_ID   "YOUR_TEMPLATE_ID"
+#define BLYNK_TEMPLATE_NAME "YOUR_TEMPLATE_NAME"
+#define BLYNK_AUTH_TOKEN    "YOUR_AUTH_TOKEN"
 
-   const char ssid[] = "YOUR_WIFI_SSID";
-   const char pass[] = "YOUR_WIFI_PASSWORD";
-   ```
+const char* telegramBotToken = "YOUR_BOT_TOKEN";
+const char* telegramChatID   = "YOUR_CHAT_ID";
+
+const char ssid[] = "YOUR_WIFI_SSID";
+const char pass[] = "YOUR_WIFI_PASSWORD";
+```
 
 4. **Calibrate sensors** — Adjust the calibration constants to match your specific sensor modules:
-   ```cpp
-   const float vCalibration    = 125.10;  // Tune with a known voltage source
-   const float currCalibration = 1.89;    // Tune with a known load
-   ```
+
+```cpp
+const float vCalibration    = 125.10;  // Tune with a known voltage source
+const float currCalibration = 1.89;    // Tune with a known load
+```
 
 5. **Upload** — Select **ESP32 Dev Module** as your board and upload the sketch.
 
@@ -191,7 +196,7 @@ Install the following libraries via the **Arduino Library Manager** or **Platfor
 ### Blynk Virtual Pins
 
 | Virtual Pin | Data | Type |
-|---|---|---|
+|-------------|------|------|
 | V0 | Voltage (Vrms) | Gauge / Value Display |
 | V1 | Current (Irms) | Gauge / Value Display |
 | V2 | Apparent Power (W) | Gauge / Value Display |
@@ -201,7 +206,7 @@ Install the following libraries via the **Arduino Library Manager** or **Platfor
 ### Timer Intervals
 
 | Interval | Function | Default |
-|---|---|---|
+|----------|----------|---------|
 | Energy data update | `sendEnergyDataToBlynk()` | 1 second |
 | LCD page switch | `changeDisplayPage()` | 2 seconds |
 | Telegram report | `sendBillToTelegram()` | 60 seconds |
@@ -227,12 +232,12 @@ Install the following libraries via the **Arduino Library Manager** or **Platfor
 The system implements the **Ceylon Electricity Board (CEB)** domestic tiered tariff structure:
 
 | Slab | Units (kWh) | Energy Charge (Rs/kWh) | Fixed Charge (Rs/month) |
-|---|---|---|---|
-| 1 | 0 – 30 | 8.00 | 120.00 |
-| 2 | 31 – 60 | 10.00 | 240.00 |
-| 3 | 61 – 90 | 16.00 | 360.00 |
-| 4 | 91 – 120 | 32.00 | 480.00 |
-| 5 | 121 – 180 | 45.00 | 540.00 |
+|------|-------------|------------------------|------------------------|
+| 1 | 0 - 30 | 8.00 | 120.00 |
+| 2 | 31 - 60 | 10.00 | 240.00 |
+| 3 | 61 - 90 | 16.00 | 360.00 |
+| 4 | 91 - 120 | 32.00 | 480.00 |
+| 5 | 121 - 180 | 45.00 | 540.00 |
 | 6 | 180+ | 50.00 | 600.00 |
 
 > **Note:** The fixed charge is prorated based on actual consumption within each slab.
@@ -244,10 +249,10 @@ The system implements the **Ceylon Electricity Board (CEB)** domestic tiered tar
 Set up the following widgets in your Blynk dashboard:
 
 | Widget | Virtual Pin | Suggested Range |
-|---|---|---|
-| Gauge — Voltage | V0 | 0 – 300 V |
-| Gauge — Current | V1 | 0 – 30 A |
-| Gauge — Power | V2 | 0 – 5000 W |
+|--------|-------------|----------------|
+| Gauge — Voltage | V0 | 0 - 300 V |
+| Gauge — Current | V1 | 0 - 30 A |
+| Gauge — Power | V2 | 0 - 5000 W |
 | Value Display — Energy | V3 | — |
 | Value Display — Cost | V4 | — |
 
@@ -258,6 +263,7 @@ Set up the following widgets in your Blynk dashboard:
 The bot sends two types of messages:
 
 ### Periodic Usage Update (every 60 seconds)
+
 ```
 🔌 Voltiva 2.0 Usage Update
 ⚡ Voltage: 228.5 V
@@ -268,6 +274,7 @@ The bot sends two types of messages:
 ```
 
 ### Plug-Out Session Summary
+
 ```
 🔌 Plugged off after 15.30 min
 📊 Session Energy: 0.0712 kWh
@@ -279,21 +286,22 @@ The bot sends two types of messages:
 ## 🔨 Troubleshooting
 
 | Issue | Solution |
-|---|---|
+|-------|----------|
 | LCD shows nothing | Check I2C address (try `0x3F` instead of `0x27`). Run an I2C scanner sketch. |
-| WiFi won't connect | Verify SSID/password. Ensure 2.4 GHz network (ESP32 doesn't support 5 GHz). |
+| WiFi won't connect | Verify SSID/password. Ensure 2.4 GHz network (ESP32 does not support 5 GHz). |
 | Voltage reads 0 | Check ZMPT101B wiring to GPIO 35. Verify AC input connection. |
 | Current reads 0 | Check ACS712 wiring to GPIO 34. Ensure load is actually drawing current. |
 | Blynk offline | Verify auth token, template ID, and internet connectivity. |
 | Telegram not sending | Check bot token and chat ID. Ensure bot is not blocked. |
-| Cost not calculating | Confirm `kWh` is accumulating. Press reset button and test with a known load. |
+| Cost not calculating | Confirm kWh is accumulating. Press reset button and test with a known load. |
 
 ---
 
 ## 👥 Team
 
-**Group 07** — BECS 31811 Creative Design Project II  
-**University of Kelaniya**, Faculty of Computing & Technology
+**Group 07** — BECS 31811 Creative Design Project II
+
+**University of Kelaniya**, Faculty of Computing and Technology
 
 ---
 
@@ -310,4 +318,3 @@ This project is developed as part of an academic course module. Feel free to use
 ⚡ *Voltiva 2.0 — Know what you consume* ⚡
 
 </div>
-]]>
