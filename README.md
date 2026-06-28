@@ -315,6 +315,6 @@ This project is developed as part of an academic course module. Feel free to use
 
 **Made with ❤️ and ESP32**
 
-⚡ *Voltiva 2.0 — Know what you consume* ⚡
+⚡ *Voltiva 2.0* ⚡
 
 </div>
